@@ -3,8 +3,8 @@ const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const showRoute = require('./show.route');
 const docsRoute = require('./docs.route');
+const commentRoute = require('./comment.route');
 const config = require('../../config/config');
-const Show = require('../../models/show.model');
 
 const router = express.Router();
 
@@ -20,6 +20,10 @@ const defaultRoutes = [
   {
     path: '/shows',
     route: showRoute,
+  },
+  {
+    path: '/comments',
+    route: commentRoute,
   }
 ];
 

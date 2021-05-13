@@ -3,7 +3,9 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { showService } = require('../services');
 const pick = require('../utils/pick');
-const User = require('../models/user.model') //////////////////
+const User = require('../models/user.model')
+const jwt = require('jsonwebtoken');
+const config = require('../config/config');
 
 const addShow = catchAsync(async (req, res) => {
     console.log(req.body);
@@ -39,10 +41,26 @@ const updateShowById = catchAsync(async (req, res) => {
     res.send(show);
 });
 
+const addShowToWatchlist = catchAsync(async (req, res) => {
+    const accessToken = req.headers.authorization.split(" ")[1]
+    const userID = jwt.verify(accessToken, config.jwt.secret).sub; // get userID from payload
+    const result = await showService.addShowToWatchlist(req.params.showID, userID)
+    res.send(result)
+});
+
+const removeShowFromWatchlist = catchAsync(async (req, res) => {
+    const accessToken = req.headers.authorization.split(" ")[1]
+    const userID = jwt.verify(accessToken, config.jwt.secret).sub; // get userID from payload
+    const result = await showService.removeShowFromWatchlist(req.params.showID, userID)
+    res.send(result)
+});
+
 module.exports = {
     addShow,
     getShows,
     getShowById,
     deleteShow,
-    updateShowById
+    updateShowById,
+    addShowToWatchlist,
+    removeShowFromWatchlist
   };

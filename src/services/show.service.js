@@ -1,8 +1,7 @@
-const { Show } = require('../models');
+const { Show, User } = require('../models');
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
-const { mongoose } = require('../config/config');
-const { name } = require('faker');
+// const { mongoose } = require('../config/config');
 
 /**
  * Add a new show
@@ -74,10 +73,37 @@ const updateShowById = async (showID, updateBody) => {
     return show;
 };
 
+const addShowToWatchlist = async (showID, userID) => {
+    alreadyInList = await Show.find({_id : showID, usersWatching : userID})
+    if (alreadyInList[0]){
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'Already in watchlist');
+    }
+    // new : true as option should be passes to return updated doc
+    updatedShow = await Show.findByIdAndUpdate(showID, {$push : {usersWatching : userID}},
+        {new: true})
+    updatedUser = await User.findByIdAndUpdate(userID, {$push : {watchList : showID}},
+        {new: true})
+    return {updatedShow, updatedUser}
+};
+
+const removeShowFromWatchlist = async (showID, userID) => {
+    alreadyInList = await Show.find({_id : showID, usersWatching : userID})
+    if (!alreadyInList[0]){
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'You cannot erase what never existed');
+    }
+    updatedShow = await Show.findByIdAndUpdate(showID, {$pull : {usersWatching : userID}},
+        {new: true})
+    updatedUser = await User.findByIdAndUpdate(userID, {$pull : {watchList : showID}},
+        {new: true})
+    return {updatedShow, updatedUser}
+}
+
 module.exports = {
     addShow,
     getShowById,
     getShows,
     deleteShowById,
-    updateShowById
+    updateShowById,
+    addShowToWatchlist,
+    removeShowFromWatchlist
 }

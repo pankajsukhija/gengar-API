@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { User } = require('../models');
+const { User, Show, Comment } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -35,7 +35,12 @@ const queryUsers = async (filter, options) => {
  * @returns {Promise<User>}
  */
 const getUserById = async (id) => {
-  return User.findById(id);
+  user = await User.findById(id).populate("comments")
+  await user.populate('watchList').execPopulate()
+  await console.log(user.populated('watchList'))
+  // Make sure to import User and Show models :oooooo
+  // Still not working though
+  return user;
 };
 
 /**
