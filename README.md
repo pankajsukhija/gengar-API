@@ -2,6 +2,18 @@
 
 Mongoose + Express + JWT based tv show discussion kinda' ? thing.....? Prebuilt boiler plate is used (npx create-nodejs-express-app)
 
+User Input Validation is pending. Everything else working.
+- CRUD users
+- CRUD Shows
+- Create and Delete Comments
+- Per User Watchlists
+- Per Show usersWatching and Comments
+- Authorization for watchlist and comments using UserID from JWT Payload
+
+
+![Alt text](/screenshots/Screenshot1.JPG)
+
+
 ## Table of Contents
 
 - [Features](#features)
