@@ -53,7 +53,7 @@ const removeShowFromWatchlist = catchAsync(async (req, res) => {
     const userID = jwt.verify(accessToken, config.jwt.secret).sub; // get userID from payload
     const result = await showService.removeShowFromWatchlist(req.params.showID, userID)
     res.send(result)
-});
+})
 
 module.exports = {
     addShow,

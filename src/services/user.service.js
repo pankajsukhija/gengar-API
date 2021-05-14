@@ -35,12 +35,11 @@ const queryUsers = async (filter, options) => {
  * @returns {Promise<User>}
  */
 const getUserById = async (id) => {
-  user = await User.findById(id).populate("comments")
-  await user.populate('watchList').execPopulate()
-  await console.log(user.populated('watchList'))
+  const user = await User.findById(id).populate("comments")
+  const userX = await user.populate('watchList', 'name').execPopulate()
+  // await console.log(userX.populated('watchList')) //[ 60962e0caf14b21a607be20a, 60962945aefa4f1f54407269 ]
   // Make sure to import User and Show models :oooooo
-  // Still not working though
-  return user;
+  return userX;
 };
 
 /**

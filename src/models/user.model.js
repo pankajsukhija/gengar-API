@@ -44,7 +44,7 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    watchList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    watchList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Show' }],
     comments:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
     avatarURL: String
   },

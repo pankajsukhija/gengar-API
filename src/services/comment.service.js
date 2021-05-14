@@ -17,7 +17,8 @@ const addComment = async (showID, userID, content ) => {
   await updatedShow.populate("comments.userID", "name").execPopulate()
   updatedUser = await User.findByIdAndUpdate(userID, {$push : {comments : comment._id}},
     {new: true})
-  return updatedShow;
+  const populatedShow = await updatedShow.populate('usersWatching ', 'name').execPopulate()
+  return populatedShow
 };
 
 
@@ -36,7 +37,8 @@ const deleteCommentById = async (commentID, showID, userID) => {
   updatedShow.populate("comments.userID", "name").execPopulate()
   updatedUser = await User.findByIdAndUpdate(userID, {$pull : {comments : commentID}},
     {new: true})
-  return updatedShow;
+  const populatedShow = await updatedShow.populate('usersWatching ', 'name').execPopulate()
+  return populatedShow
 };
 
 module.exports = {

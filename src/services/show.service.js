@@ -37,7 +37,9 @@ const getShowById = async (id) => {
     // https://mongoosejs.com/docs/populate.html
     // Life saver - https://stackoverflow.com/questions/57256207/mongoose-populating-a-nested-array-of-ids
     show = await Show.findById(id)
+    console.log(show)
     await show.populate('usersWatching', 'name').execPopulate()
+    await show.populate('comments').execPopulate()
     return show;
 };
 
@@ -83,7 +85,9 @@ const addShowToWatchlist = async (showID, userID) => {
         {new: true})
     updatedUser = await User.findByIdAndUpdate(userID, {$push : {watchList : showID}},
         {new: true})
-    return {updatedShow, updatedUser}
+    const populatedWithComments = await updatedShow.populate('comments').execPopulate()
+    const populatedShow = await populatedWithComments.populate('usersWatching ', 'name').execPopulate()
+    return populatedShow
 };
 
 const removeShowFromWatchlist = async (showID, userID) => {
@@ -95,7 +99,9 @@ const removeShowFromWatchlist = async (showID, userID) => {
         {new: true})
     updatedUser = await User.findByIdAndUpdate(userID, {$pull : {watchList : showID}},
         {new: true})
-    return {updatedShow, updatedUser}
+    const populatedWithComments = await updatedShow.populate('comments').execPopulate()
+    const populatedShow = await populatedWithComments.populate('usersWatching ', 'name').execPopulate()
+    return populatedShow
 }
 
 module.exports = {
