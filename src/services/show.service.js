@@ -37,9 +37,13 @@ const getShowById = async (id) => {
     // https://mongoosejs.com/docs/populate.html
     // Life saver - https://stackoverflow.com/questions/57256207/mongoose-populating-a-nested-array-of-ids
     show = await Show.findById(id)
-    console.log(show)
+    if (!show) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Show not found');
+    }
+    //console.log(show)
     await show.populate('usersWatching', 'name').execPopulate()
     await show.populate('comments').execPopulate()
+    await show.populate('comments.userID', 'name').execPopulate()
     return show;
 };
 
@@ -50,7 +54,7 @@ const getShowById = async (id) => {
  * @returns {Promise<Show>}
  */
  const deleteShowById = async (showID) => {
-    const show = await getShowById(showID);
+    const show = await getShowById(showID); // i know this will cause show to populate first unnecessarily
     if (!show) {
       throw new ApiError(httpStatus.NOT_FOUND, 'Show not found');
     }

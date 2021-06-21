@@ -4,6 +4,9 @@ const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
 
+const Show = require('./show.model')
+const Comment = require('./comment.model')
+
 const userSchema = mongoose.Schema(
   {
     name: {
