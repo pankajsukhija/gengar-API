@@ -16,7 +16,7 @@ const addShow = catchAsync(async (req, res) => {
 const getShows = catchAsync(async (req, res) => {
     const filter = pick(req.query, ['name', 'genre']);
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
-    options.populate = 'comments.userID, usersID.name' // adds populate to paginate options object 
+    // options.populate = 'comments.userID, usersID.name' // adds populate to paginate options object 
     // usersWatching doesn't work and message: Cast to ObjectId failed for value "" at path "_id" for model "User"
     // Leaving it as it is
     // Don't want to mess with the paginate plugin included in boilerplate.
